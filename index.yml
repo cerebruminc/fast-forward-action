@@ -3,12 +3,6 @@ on:
     inputs:
       repo_name:
         required: true
-      base_branch:
-        required: true
-        type: string
-      compare_branch:
-        required: true
-        type: string
       pr_number:
         required: true
         type: number
@@ -37,7 +31,11 @@ jobs:
           ${{ steps.get_pull_request_info.outputs.data }}
           EOF
           export IS_MERGEABLE_PR=$(jq -r '.mergeable' pr.js)
+          export BASE_BRANCH=$(jq -r '.base.ref' pr.js)
+          export COMPARE_BRANCH=$(jq -r '.head.ref' pr.js)
           echo "mergeable=$IS_MERGEABLE_PR" >> $GITHUB_OUTPUT
+          echo "baseBranch=$BASE_BRANCH" >> $GITHUB_OUTPUT
+          echo "compareBranch=$COMPARE_BRANCH" >> $GITHUB_OUTPUT
 
       - uses: actions/checkout@v3
 
@@ -46,6 +44,6 @@ jobs:
         run: |
           git config --user.email "smellen@cerebrum.com"
           git config --user.name "cerebrumcom"
-          git checkout ${{ inputs.base_branch }}
-          git merge --ff-only ${{ inputs.compare_branch }}
+          git checkout ${{ steps.mergeable_pr.outputs.baseBranch }}
+          git merge --ff-only ${{ steps.mergeable_pr.outputs.compareBranch }}
           git push
