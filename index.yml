@@ -39,6 +39,8 @@ jobs:
           export IS_MERGEABLE_PR=$(jq -r '.mergeable' pr.js)
           echo "mergeable=$IS_MERGEABLE_PR" >> $GITHUB_OUTPUT
 
+      - uses: actions/checkout@v3
+
       - name: Merge the PR
         if: steps.mergeable_pr.outputs.token
         run: |
