@@ -3,11 +3,12 @@ on:
     inputs:
       repo_name:
         required: true
+        type: string
       pr_number:
         required: true
         type: number
     secrets:
-      GITHUB_TOKEN:
+      GITHUB_AUTH_TOKEN:
         required: true
 
 jobs:
@@ -22,7 +23,7 @@ jobs:
           repo: ${{ inputs.repo_name }}
           pr: ${{ inputs.pr_number }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
 
       - name: Parse pull request using jq and checking mergeable state
         id: mergeable_pr
@@ -42,6 +43,7 @@ jobs:
       - name: Merge the PR
         if: steps.mergeable_pr.outputs.token
         run: |
+          git remote set-url origin https://cerebrumcom:${{ secrets.GITHUB_AUTH_TOKEN }}/${{ inputs.repo_name }}.git
           git config --user.email "smellen@cerebrum.com"
           git config --user.name "cerebrumcom"
           git checkout ${{ steps.mergeable_pr.outputs.baseBranch }}
