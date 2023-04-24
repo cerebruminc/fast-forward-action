@@ -42,14 +42,15 @@ jobs:
         if: steps.mergeable_pr.outputs.mergeable
         with:
           fetch-depth: 0
+          ref: ${{ steps.mergeable_pr.outputs.compareBranch }}
+          token: ${{ secrets.GITHUB_AUTH_TOKEN }}
 
       - name: Merge the PR
         if: steps.mergeable_pr.outputs.mergeable
         run: |
           git config --global user.email "smellen@cerebrum.com"
           git config --global user.name "cerebrumcom"
-          git remote set-url origin https://cerebrumcom:${{ secrets.GITHUB_AUTH_TOKEN }}@github.com/${{ inputs.repo_name }}.git
-          git checkout ${{ steps.mergeable_pr.outputs.compareBranch }}
+          # git remote set-url origin https://cerebrumcom:${{ secrets.GITHUB_AUTH_TOKEN }}@github.com/${{ inputs.repo_name }}.git
           git checkout ${{ steps.mergeable_pr.outputs.baseBranch }}
           git merge --ff-only ${{ steps.mergeable_pr.outputs.compareBranch }}
-          git push origin ${{ steps.mergeable_pr.outputs.baseBranch }}
+          git push origin
