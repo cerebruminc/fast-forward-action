@@ -46,6 +46,6 @@ jobs:
           git remote set-url origin https://cerebrumcom:${{ secrets.GITHUB_AUTH_TOKEN }}/${{ inputs.repo_name }}.git
           git config --global user.email "smellen@cerebrum.com"
           git config --global user.name "cerebrumcom"
-          git switch ${{ steps.mergeable_pr.outputs.baseBranch }}
+          git checkout --track origin/${{ steps.mergeable_pr.outputs.baseBranch }}
           git merge --ff-only ${{ steps.mergeable_pr.outputs.compareBranch }}
           git push
