@@ -44,8 +44,8 @@ jobs:
         if: steps.mergeable_pr.outputs.mergeable
         run: |
           git remote set-url origin https://cerebrumcom:${{ secrets.GITHUB_AUTH_TOKEN }}/${{ inputs.repo_name }}.git
-          git config --user.email "smellen@cerebrum.com"
-          git config --user.name "cerebrumcom"
+          git config --global user.email "smellen@cerebrum.com"
+          git config --global user.name "cerebrumcom"
           git checkout ${{ steps.mergeable_pr.outputs.baseBranch }}
           git merge --ff-only ${{ steps.mergeable_pr.outputs.compareBranch }}
           git push
