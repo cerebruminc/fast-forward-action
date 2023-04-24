@@ -46,10 +46,10 @@ jobs:
       - name: Merge the PR
         if: steps.mergeable_pr.outputs.mergeable
         run: |
+          git config --global user.email "smellen@cerebrum.com"
+          git config --global user.name "cerebrumcom"
           git remote set-url origin https://cerebrumcom:${{ secrets.GITHUB_AUTH_TOKEN }}@github.com/${{ inputs.repo_name }}.git
           git checkout ${{ steps.mergeable_pr.outputs.compareBranch }}
           git checkout ${{ steps.mergeable_pr.outputs.baseBranch }}
-          git config --global user.email "smellen@cerebrum.com"
-          git config --global user.name "cerebrumcom"
           git merge --ff-only ${{ steps.mergeable_pr.outputs.compareBranch }}
-          git push
+          git push origin ${{ steps.mergeable_pr.outputs.baseBranch }}
