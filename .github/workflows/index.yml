@@ -16,7 +16,7 @@ on:
 
 jobs:
   main:
-    if: inputs.comment_body == "/fast-forward"
+    if: inputs.comment_body == '/fast-forward'
     runs-on: ubuntu-20.04
     steps:
       - uses: octokit/request-action@v2.x
