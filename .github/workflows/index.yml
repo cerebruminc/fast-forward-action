@@ -10,7 +10,7 @@ on:
       comment_body:
         required: true
         type: string
-      head_ref:
+      base_ref:
         required: true
         type: string
     secrets:
@@ -19,7 +19,7 @@ on:
 
 jobs:
   main:
-    if: inputs.comment_body == '/fast-forward' && (inputs.head_ref == 'master' || inputs.head_ref == 'main')
+    if: inputs.comment_body == '/fast-forward' && (inputs.base_ref == 'staging' || inputs.base_ref == 'production')
     runs-on: ubuntu-20.04
     steps:
       - uses: octokit/request-action@v2.x
