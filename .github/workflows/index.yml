@@ -14,9 +14,9 @@ on:
       GITHUB_AUTH_TOKEN:
         required: true
 
-jobs:        
+jobs:
   main:
-    # if: ${{ !startsWith(github.head_ref, 'release-please') && !startsWith(github.head_ref, 'renovate') && inputs.comment_body == "/fast-forward" }}
+    if: inputs.comment_body == "/fast-forward"
     runs-on: ubuntu-20.04
     steps:
       - uses: octokit/request-action@v2.x
