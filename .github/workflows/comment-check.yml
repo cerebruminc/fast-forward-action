@@ -1,0 +1,38 @@
+on:
+  workflow_call:
+    inputs:
+      repo_name:
+        required: true
+        type: string
+      pr_number:
+        required: true
+        type: number
+    secrets:
+      GITHUB_AUTH_TOKEN:
+        required: true
+
+jobs:
+  check-for-comment:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: octokit/request-action@v2.x
+        id: get_pull_request_comments
+        with:
+          route: GET /repos/{repo}/issues/comments
+          repo: ${{ inputs.repo_name }}
+          pr: ${{ inputs.pr_number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
+
+      - name: Parse pull request comments using jq and checking if fast-forward comment exists
+        id: comments_pr
+        run: |
+          cat <<EOF > comments.js
+          ${{ steps.get_pull_request_comments.outputs.data }}
+          EOF
+          COMMENT_EXISTS=$(jq -r '.[] | select(.body=="/fast-forward") | .body')
+          if [ "$COMMENT_EXISTS" == "/fast-forward" ]; then
+            exit 0
+          else
+            exit 1
+          fi

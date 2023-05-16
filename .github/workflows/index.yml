@@ -7,13 +7,16 @@ on:
       pr_number:
         required: true
         type: number
+      comment_body:
+        required: true
+        type: string
     secrets:
       GITHUB_AUTH_TOKEN:
         required: true
 
 jobs:
   main:
-    # if: ${{ !startsWith(github.head_ref, 'release-please') && !startsWith(github.head_ref, 'renovate') }}
+    if: inputs.comment_body == "/fast-forward"
     runs-on: ubuntu-20.04
     steps:
       - uses: octokit/request-action@v2.x
