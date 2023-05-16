@@ -18,7 +18,7 @@ jobs:
       - uses: octokit/request-action@v2.x
         id: get_pull_request_comments
         with:
-          route: GET /repos/{repo}/issues/comments
+          route: GET /repos/{repo}/issues/{pr}/comments
           repo: ${{ inputs.repo_name }}
           pr: ${{ inputs.pr_number }}
         env:
