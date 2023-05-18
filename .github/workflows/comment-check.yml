@@ -16,7 +16,7 @@ on:
 
 jobs:
   check-for-comment:
-    if: inputs.base_ref == 'staging' || inputs.base_ref == 'production'
+    if: ${{ contains(inputs.base_ref, 'staging') || contains(inputs.base_ref, 'production') }}
     runs-on: ubuntu-20.04
     steps:
       - uses: octokit/request-action@v2.x
