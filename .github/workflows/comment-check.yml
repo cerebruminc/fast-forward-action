@@ -35,5 +35,6 @@ jobs:
           ${{ steps.get_pull_request_comments.outputs.data }}
           EOF
           COMMENT_EXISTS=$(jq -r '.[] | select(.body=="/fast-forward") | .body')
+          echo $COMMENT_EXISTS
           echo $COMMENT_EXISTS | grep -q "/fast-forward" 2> /dev/null
           exit $?
