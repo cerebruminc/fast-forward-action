@@ -10,16 +10,13 @@ on:
       comment_body:
         required: true
         type: string
-      base_ref:
-        required: true
-        type: string
     secrets:
       GITHUB_AUTH_TOKEN:
         required: true
 
 jobs:
   main:
-    if: ${{ inputs.comment_body == '/fast-forward' && (contains(inputs.base_ref, 'staging') || contains(inputs.base_ref, 'production')) }}
+    if: ${{ inputs.comment_body == '/fast-forward' }}
     runs-on: ubuntu-20.04
     steps:
       - uses: octokit/request-action@v2.x
@@ -42,7 +39,14 @@ jobs:
           export COMPARE_BRANCH=$(jq -r '.head.ref' pr.js)
           echo "mergeable=$IS_MERGEABLE_PR" >> $GITHUB_OUTPUT
           echo "baseBranch=$BASE_BRANCH" >> $GITHUB_OUTPUT
+          echo "BASE_BRANCH=$BASE_BRANCH" >> $GITHUB_ENV
           echo "compareBranch=$COMPARE_BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Check if the base ref is staging or production
+        run: |
+          if [ [ "${BASE_BRANCH}" != "staging" ] && [ "${BASE_BRANCH}" != "production" ]; then
+            exit 1
+          fi
 
       - uses: actions/checkout@v3
         if: steps.mergeable_pr.outputs.mergeable
