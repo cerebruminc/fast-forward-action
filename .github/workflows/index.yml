@@ -44,7 +44,7 @@ jobs:
 
       - name: Check if the base ref is staging or production
         run: |
-          if [ [ "${BASE_BRANCH}" != "staging" ] && [ "${BASE_BRANCH}" != "production" ]; then
+          if [ "${BASE_BRANCH}" != "staging" ] && [ "${BASE_BRANCH}" != "production" ]; then
             exit 1
           fi
 
