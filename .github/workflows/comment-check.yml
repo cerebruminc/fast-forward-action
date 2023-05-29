@@ -12,7 +12,7 @@ on:
         required: true
 
 jobs:
-  check-env:
+  check-for-comment:
     runs-on: ubuntu-20.04
     steps:
       - uses: octokit/request-action@v2.x
@@ -34,17 +34,6 @@ jobs:
           echo "baseBranch=$BASE_BRANCH" >> $GITHUB_OUTPUT
           echo "BASE_BRANCH=$BASE_BRANCH" >> $GITHUB_ENV
 
-      - name: Check if the base ref isn't staging or production
-        run: |
-          if [ "$BASE_BRANCH" != "staging" ] && [ "$BASE_BRANCH" != "production" ]; then
-            exit 0
-          fi
-
-  check-for-comment:
-    needs: check-env
-    if: ${{ env.BASE_BRANCH == 'staging' && env.BASE_BRANCH == 'production' }}
-    runs-on: ubuntu-20.04
-    steps:
       - uses: octokit/request-action@v2.x
         id: get_pull_request_comments
         with:
@@ -54,9 +43,11 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
 
-      - name: Parse pull request comments using jq and checking if fast-forward comment exists
-        id: comments_pr
+      - name: Check base ref, parse comments and check if fast-forward comment exists
         run: |
+          if [ "$BASE_BRANCH" != "staging" ] && [ "$BASE_BRANCH" != "production" ]; then
+            exit 0
+          fi
           cat <<EOF > comments.js
           ${{ steps.get_pull_request_comments.outputs.data }}
           EOF
