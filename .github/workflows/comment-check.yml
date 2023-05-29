@@ -7,18 +7,39 @@ on:
       pr_number:
         required: true
         type: number
-      base_ref:
-        required: true
-        type: string
     secrets:
       GITHUB_AUTH_TOKEN:
         required: true
 
 jobs:
   check-for-comment:
-    if: ${{ contains(inputs.base_ref, 'staging') || contains(inputs.base_ref, 'production') }}
     runs-on: ubuntu-20.04
     steps:
+      - uses: octokit/request-action@v2.x
+        id: get_pull_request_info
+        with:
+          route: GET /repos/{repo}/pulls/{pr}
+          repo: ${{ inputs.repo_name }}
+          pr: ${{ inputs.pr_number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
+
+      - name: Parse pull request using jq and checking mergeable state
+        id: mergeable_pr
+        run: |
+          cat <<EOF > pr.js
+          ${{ steps.get_pull_request_info.outputs.data }}
+          EOF
+          export BASE_BRANCH=$(jq -r '.base.ref' pr.js)
+          echo "baseBranch=$BASE_BRANCH" >> $GITHUB_OUTPUT
+          echo "BASE_BRANCH=$BASE_BRANCH" >> $GITHUB_ENV
+
+      - name: Check if the base ref isn't staging or production
+        run: |
+          if [ [ "${BASE_BRANCH}" != "staging" ] && [ "${BASE_BRANCH}" != "production" ]; then
+            exit 0
+          fi
+
       - uses: octokit/request-action@v2.x
         id: get_pull_request_comments
         with:
