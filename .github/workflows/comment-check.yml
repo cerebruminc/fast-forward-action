@@ -1,6 +1,9 @@
 on:
   workflow_call:
     inputs:
+      github_object:
+        required: true
+        type: string
       repo_name:
         required: true
         type: string
@@ -15,6 +18,10 @@ jobs:
   check-for-comment:
     runs-on: ubuntu-20.04
     steps:
+      - name: Parse the current GitHub object
+        run:
+          echo ${{ inputs.github_object }}
+  
       - uses: octokit/request-action@v2.x
         id: get_pull_request_info
         with:
