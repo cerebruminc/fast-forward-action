@@ -42,9 +42,9 @@ jobs:
           echo "BASE_BRANCH=$BASE_BRANCH" >> $GITHUB_ENV
           echo "compareBranch=$COMPARE_BRANCH" >> $GITHUB_OUTPUT
 
-      - name: Check if the base ref is staging or production
+      - name: Check if the base ref is demo, staging or production
         run: |
-          if [ "${BASE_BRANCH}" != "staging" ] && [ "${BASE_BRANCH}" != "production" ]; then
+          if [ "${BASE_BRANCH}" != "demo" ] && [ "${BASE_BRANCH}" != "staging" ] && [ "${BASE_BRANCH}" != "production" ]; then
             exit 1
           fi
 
