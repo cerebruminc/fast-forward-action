@@ -45,7 +45,7 @@ jobs:
 
       - name: Check base ref, parse comments and check if fast-forward comment exists
         run: |
-          if [ "$BASE_BRANCH" != "staging" ] && [ "$BASE_BRANCH" != "production" ]; then
+          if [ "$BASE_BRANCH" != "demo" ] && [ "$BASE_BRANCH" != "staging" ] && [ "$BASE_BRANCH" != "production" ]; then
             exit 0
           fi
           cat <<EOF > comments.js
