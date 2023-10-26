@@ -27,10 +27,10 @@ jobs:
       - name: Parse pull request using jq and checking mergeable state
         id: mergeable_pr
         run: |
-          cat <<EOF > pr.js
+          cat <<"EOF" > pr.json
           ${{ steps.get_pull_request_info.outputs.data }}
           EOF
-          export BASE_BRANCH=$(jq -r '.base.ref' pr.js)
+          export BASE_BRANCH=$(jq -r '.base.ref' pr.json)
           echo "baseBranch=$BASE_BRANCH" >> $GITHUB_OUTPUT
           echo "BASE_BRANCH=$BASE_BRANCH" >> $GITHUB_ENV
 
@@ -48,9 +48,9 @@ jobs:
           if [ "$BASE_BRANCH" != "demo" ] && [ "$BASE_BRANCH" != "staging" ] && [ "$BASE_BRANCH" != "production" ]; then
             exit 0
           fi
-          cat <<EOF > comments.js
+          cat <<"EOF" > comments.json
           ${{ steps.get_pull_request_comments.outputs.data }}
           EOF
-          COMMENT_EXISTS=$(jq -r '.[] | select(.body=="/fast-forward") | .body' < comments.js)
+          COMMENT_EXISTS=$(jq -r '.[] | select(.body=="/fast-forward") | .body' < comments.json)
           echo $COMMENT_EXISTS | grep -q "/fast-forward" 2> /dev/null
           exit $?
