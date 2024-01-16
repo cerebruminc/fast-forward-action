@@ -57,12 +57,12 @@ jobs:
 
       - name: Unfreeze Branch
         if: steps.mergeable_pr.outputs.mergeable
-        uses: actions/http-client@v1.0.0
+        uses: fjogeleit/http-request-action@v1
         with:
-          method: POST
-          url: "https://app.mergefreeze.com/api/branches/cerebruminc/${{ inputs.repo_name }}/${{ env.BASE_BRANCH }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
-          headers: '{"Content-Type": "application/x-www-form-urlencoded"}'
-          body: "frozen=false&user_name=Cerebrum MergeBot"
+          url: "https://app.mergefreeze.com/api/branches/${{ inputs.repo_name }}/${{ env.BASE_BRANCH }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
+          method: "POST"
+          customHeaders: '{"Content-Type": "application/x-www-form-urlencoded"}'
+          data: "frozen=false&user_name=Cerebrum MergeBot"
 
       - name: Merge the PR
         if: steps.mergeable_pr.outputs.mergeable
@@ -76,9 +76,9 @@ jobs:
 
       - name: Freeze Branch
         if: steps.mergeable_pr.outputs.mergeable
-        uses: actions/http-client@v1.0.0
+        uses: fjogeleit/http-request-action@v1
         with:
-          method: POST
-          url: "https://app.mergefreeze.com/api/branches/cerebruminc/${{ inputs.repo_name }}/${{ env.BASE_BRANCH }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
-          headers: '{"Content-Type": "application/x-www-form-urlencoded"}'
-          body: "frozen=true&user_name=Cerebrum MergeBot"
+          url: "https://app.mergefreeze.com/api/branches/${{ inputs.repo_name }}/${{ env.BASE_BRANCH }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
+          method: "POST"
+          customHeaders: '{"Content-Type": "application/x-www-form-urlencoded"}'
+          data: "frozen=true&user_name=Cerebrum MergeBot"
