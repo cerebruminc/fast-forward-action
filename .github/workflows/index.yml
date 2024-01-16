@@ -13,6 +13,8 @@ on:
     secrets:
       GITHUB_AUTH_TOKEN:
         required: true
+      MERGEFREEZE_TOKEN:
+        required: true
 
 jobs:
   main:
