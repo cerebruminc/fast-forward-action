@@ -66,6 +66,9 @@ jobs:
           customHeaders: '{"Content-Type": "application/x-www-form-urlencoded"}'
           data: "frozen=false&user_name=Cerebrum MergeBot"
 
+      - name: Wait a few seconds for the branch to be mergeable
+        run: sleep 30
+
       - name: Merge the PR
         if: steps.mergeable_pr.outputs.mergeable
         run: |
