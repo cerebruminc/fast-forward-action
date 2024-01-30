@@ -67,7 +67,7 @@ jobs:
           data: "frozen=false&user_name=Cerebrum MergeBot"
 
       - name: Wait a few seconds for the branch to be mergeable
-        run: sleep 30
+        run: sleep 15
 
       - name: Merge the PR
         if: steps.mergeable_pr.outputs.mergeable
