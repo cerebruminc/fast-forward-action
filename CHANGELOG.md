@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/cerebruminc/fast-forward-action/compare/v2.0.1...v2.0.2) (2024-02-16)
+
+
+### Bug Fixes
+
+* checkout code before generating floating tags ([084eef4](https://github.com/cerebruminc/fast-forward-action/commit/084eef4b44cecaac33b1fd6add455c3649d6d893))
+
 ## [2.0.1](https://github.com/cerebruminc/fast-forward-action/compare/v2.0.0...v2.0.1) (2024-02-16)
 
 
