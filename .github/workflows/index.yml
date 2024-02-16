@@ -1,15 +1,5 @@
 on:
   workflow_call:
-    inputs:
-      repo_name:
-        required: true
-        type: string
-      pr_number:
-        required: true
-        type: number
-      comment_body:
-        required: true
-        type: string
     secrets:
       GITHUB_AUTH_TOKEN:
         required: true
@@ -18,15 +8,15 @@ on:
 
 jobs:
   main:
-    if: ${{ inputs.comment_body == '/fast-forward' }}
+    if: ${{ github.event.comment.body == '/fast-forward' }}
     runs-on: ubuntu-20.04
     steps:
       - uses: octokit/request-action@v2.x
         id: get_pull_request_info
         with:
           route: GET /repos/{repo}/pulls/{pr}
-          repo: ${{ inputs.repo_name }}
-          pr: ${{ inputs.pr_number }}
+          repo: ${{ github.repository }}
+          pr: ${{ github.event.issue.number }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
 
@@ -61,7 +51,7 @@ jobs:
         if: steps.mergeable_pr.outputs.mergeable
         uses: fjogeleit/http-request-action@v1
         with:
-          url: "https://app.mergefreeze.com/api/branches/${{ inputs.repo_name }}/${{ env.BASE_BRANCH }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
+          url: "https://app.mergefreeze.com/api/branches/${{ github.repository }}/${{ env.BASE_BRANCH }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
           method: "POST"
           customHeaders: '{"Content-Type": "application/x-www-form-urlencoded"}'
           data: "frozen=false&user_name=Cerebrum MergeBot"
@@ -74,7 +64,7 @@ jobs:
         run: |
           git config --global user.email "smellen@cerebrum.com"
           git config --global user.name "cerebrumcom"
-          # git remote set-url origin https://cerebrumcom:${{ secrets.GITHUB_AUTH_TOKEN }}@github.com/${{ inputs.repo_name }}.git
+          # git remote set-url origin https://cerebrumcom:${{ secrets.GITHUB_AUTH_TOKEN }}@github.com/${{ github.repository }}.git
           git checkout ${{ steps.mergeable_pr.outputs.baseBranch }}
           git merge --ff-only ${{ steps.mergeable_pr.outputs.compareBranch }}
           git push origin
@@ -83,7 +73,7 @@ jobs:
         if: steps.mergeable_pr.outputs.mergeable
         uses: fjogeleit/http-request-action@v1
         with:
-          url: "https://app.mergefreeze.com/api/branches/${{ inputs.repo_name }}/${{ env.BASE_BRANCH }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
+          url: "https://app.mergefreeze.com/api/branches/${{ github.repository }}/${{ env.BASE_BRANCH }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
           method: "POST"
           customHeaders: '{"Content-Type": "application/x-www-form-urlencoded"}'
           data: "frozen=true&user_name=Cerebrum MergeBot"
