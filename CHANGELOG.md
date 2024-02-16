@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.3](https://github.com/cerebruminc/fast-forward-action/compare/v2.0.2...v2.0.3) (2024-02-16)
+
+
+### Bug Fixes
+
+* set user and email for rp tags ([72bae72](https://github.com/cerebruminc/fast-forward-action/commit/72bae72e29b547a993ed17a041b3c95d69ffccd8))
+
 ## [2.0.2](https://github.com/cerebruminc/fast-forward-action/compare/v2.0.1...v2.0.2) (2024-02-16)
 
 
