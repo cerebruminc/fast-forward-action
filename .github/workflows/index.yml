@@ -7,8 +7,54 @@ on:
         required: true
 
 jobs:
+  check-for-comment:
+    runs-on: ubuntu-20.04
+    env:
+      PR: ${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.event.issue.number }}
+    steps:
+      - uses: octokit/request-action@v2.x
+        id: get_pull_request_info
+        with:
+          route: GET /repos/{repo}/pulls/{pr}
+          repo: ${{ github.repository }}
+          pr: ${{ env.PR }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
+
+      - name: Parse pull request using jq and checking mergeable state
+        id: mergeable_pr
+        run: |
+          cat <<"EOF" > pr.json
+          ${{ steps.get_pull_request_info.outputs.data }}
+          EOF
+          export BASE_BRANCH=$(jq -r '.base.ref' pr.json)
+          echo "baseBranch=$BASE_BRANCH" >> $GITHUB_OUTPUT
+          echo "BASE_BRANCH=$BASE_BRANCH" >> $GITHUB_ENV
+
+      - uses: octokit/request-action@v2.x
+        id: get_pull_request_comments
+        with:
+          route: GET /repos/{repo}/issues/{pr}/comments
+          repo: ${{ github.repository }}
+          pr: ${{ env.PR }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
+
+      - name: Check base ref, parse comments and check if fast-forward comment exists
+        run: |
+          if [ "$BASE_BRANCH" != "demo" ] && [ "$BASE_BRANCH" != "staging" ] && [ "$BASE_BRANCH" != "production" ]; then
+            exit 0
+          fi
+          cat <<"EOF" > comments.json
+          ${{ steps.get_pull_request_comments.outputs.data }}
+          EOF
+          COMMENT_EXISTS=$(jq -r '.[] | select(.body=="/fast-forward") | .body' < comments.json)
+          echo $COMMENT_EXISTS | grep -q "/fast-forward" 2> /dev/null
+          exit $?
+
   main:
-    if: ${{ github.event.comment.body == '/fast-forward' }}
+    needs: check-for-comment
+    if: github.event_name == 'issue_comment' && github.event.issue.pull_request && github.event.comment.body == '/fast-forward'
     runs-on: ubuntu-20.04
     steps:
       - uses: octokit/request-action@v2.x
