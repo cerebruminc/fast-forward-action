@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/cerebruminc/fast-forward-action/compare/v2.0.0...v2.0.1) (2024-02-16)
+
+
+### Bug Fixes
+
+* create floating major and minor tags ([cb075b8](https://github.com/cerebruminc/fast-forward-action/commit/cb075b8ec3304943668ca3b1c62d97840d098778))
+
 ## [2.0.0](https://github.com/cerebruminc/fast-forward-action/compare/v1.0.0...v2.0.0) (2024-02-16)
 
 
