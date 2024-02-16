@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0.0](https://github.com/cerebruminc/fast-forward-action/compare/v1.0.0...v2.0.0) (2024-02-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* merge scripts into a single workflow
+* do not rely on unnecessary inputs
+
+### Code Refactoring
+
+* do not rely on unnecessary inputs ([323af99](https://github.com/cerebruminc/fast-forward-action/commit/323af99e0a14d84f51455b04763b74482e648a1f))
+* merge scripts into a single workflow ([2b5ac7e](https://github.com/cerebruminc/fast-forward-action/commit/2b5ac7e6adb181f4fa3e0a46f82dd48e4dcfa984))
+
 ## 1.0.0 (2024-02-16)
 
 
