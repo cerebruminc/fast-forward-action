@@ -1,12 +1,5 @@
 on:
   workflow_call:
-    inputs:
-      repo_name:
-        required: true
-        type: string
-      pr_number:
-        required: true
-        type: number
     secrets:
       GITHUB_AUTH_TOKEN:
         required: true
@@ -14,13 +7,15 @@ on:
 jobs:
   check-for-comment:
     runs-on: ubuntu-20.04
+    env:
+      PR: ${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.event.issue.number }}
     steps:
       - uses: octokit/request-action@v2.x
         id: get_pull_request_info
         with:
           route: GET /repos/{repo}/pulls/{pr}
-          repo: ${{ inputs.repo_name }}
-          pr: ${{ inputs.pr_number }}
+          repo: ${{ github.repository }}
+          pr: ${{ env.PR }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
 
@@ -38,8 +33,8 @@ jobs:
         id: get_pull_request_comments
         with:
           route: GET /repos/{repo}/issues/{pr}/comments
-          repo: ${{ inputs.repo_name }}
-          pr: ${{ inputs.pr_number }}
+          repo: ${{ github.repository }}
+          pr: ${{ env.PR }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
 
