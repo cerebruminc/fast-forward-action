@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.4](https://github.com/cerebruminc/fast-forward-action/compare/v2.0.3...v2.0.4) (2024-02-19)
+
+
+### Bug Fixes
+
+* only allow certain users to fast forward merge ([5817ed0](https://github.com/cerebruminc/fast-forward-action/commit/5817ed05f7fc54a58f1a0aac5ad648fc9dfadd6b))
+
 ## [2.0.3](https://github.com/cerebruminc/fast-forward-action/compare/v2.0.2...v2.0.3) (2024-02-16)
 
 
