@@ -93,8 +93,15 @@ jobs:
           ref: ${{ steps.mergeable_pr.outputs.compareBranch }}
           token: ${{ secrets.GITHUB_AUTH_TOKEN }}
 
+      - name: Get branch freeze status
+        id: freezeStatus
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: "https://app.mergefreeze.com/api/branches/${{ github.repository }}/${{ env.BASE_BRANCH }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
+          method: "GET"
+
       - name: Unfreeze Branch
-        if: steps.mergeable_pr.outputs.mergeable
+        if: steps.mergeable_pr.outputs.mergeable && fromJson(steps.freezeStatus.outputs.response).frozen
         uses: fjogeleit/http-request-action@v1
         with:
           url: "https://app.mergefreeze.com/api/branches/${{ github.repository }}/${{ env.BASE_BRANCH }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
