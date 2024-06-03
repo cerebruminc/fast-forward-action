@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.5](https://github.com/cerebruminc/fast-forward-action/compare/v2.0.4...v2.0.5) (2024-06-03)
+
+
+### Bug Fixes
+
+* github actions CI workflow name ([#36](https://github.com/cerebruminc/fast-forward-action/issues/36)) ([0869aa8](https://github.com/cerebruminc/fast-forward-action/commit/0869aa8d006d1b97c48dad45387e2dadad89a7e6))
+
 ## [2.0.4](https://github.com/cerebruminc/fast-forward-action/compare/v2.0.3...v2.0.4) (2024-02-19)
 
 
