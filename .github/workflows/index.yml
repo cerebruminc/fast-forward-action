@@ -1,3 +1,4 @@
+name: Fast-forward action
 on:
   workflow_call:
     secrets:
