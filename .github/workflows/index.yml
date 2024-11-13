@@ -61,7 +61,7 @@ jobs:
 
   main:
     needs: check-for-comment
-    if: github.event_name == 'issue_comment' && github.event.issue.pull_request && github.event.comment.body == '/fast-forward' && (github.event.comment.author_association == 'CONTRIBUTOR' || github.event.comment.author_association == 'MAINTAINER' || github.event.comment.author_association == 'COLLABORATOR')
+    if: github.event_name == 'issue_comment' && github.event.issue.pull_request && github.event.comment.body == '/fast-forward' && (github.event.comment.author_association == 'CONTRIBUTOR' || github.event.comment.author_association == 'MAINTAINER' || github.event.comment.author_association == 'COLLABORATOR' || github.event.comment.author_association == 'MEMBER')
     runs-on: ubuntu-20.04
     steps:
       - uses: octokit/request-action@v2.x
