@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/cerebruminc/fast-forward-action/compare/v2.1.0...v2.2.0) (2024-11-13)
+
+
+### Features
+
+* allow MEMBERS to trigger fast-forward command in issue comments ([a9bdc75](https://github.com/cerebruminc/fast-forward-action/commit/a9bdc75abe54d0e9d58ac2ff43feefa32ee206dd))
+
 ## [2.1.0](https://github.com/cerebruminc/fast-forward-action/compare/v2.0.5...v2.1.0) (2024-11-13)
 
 
