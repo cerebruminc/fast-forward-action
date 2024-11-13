@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/cerebruminc/fast-forward-action/compare/v2.0.5...v2.1.0) (2024-11-13)
+
+
+### Features
+
+* add debug information for GitHub Actions workflow comments handling ([ac0ddaa](https://github.com/cerebruminc/fast-forward-action/commit/ac0ddaa1818fac8b9ceee8ff279239795461a50c))
+
 ## [2.0.5](https://github.com/cerebruminc/fast-forward-action/compare/v2.0.4...v2.0.5) (2024-06-03)
 
 
