@@ -52,6 +52,12 @@ jobs:
           COMMENT_EXISTS=$(jq -r '.[] | select(.body=="/fast-forward") | .body' < comments.json)
           echo $COMMENT_EXISTS | grep -q "/fast-forward" 2> /dev/null
           exit $?
+      - name: Debug
+        run: |
+          echo github.event_name: ${{ github.event_name }}
+          echo github.event.issue.pull_request: ${{ github.event.issue.pull_request }}
+          echo github.event.comment.body: ${{ github.event.comment.body }}
+          echo github.event.comment.author_association: ${{ github.event.comment.author_association }}
 
   main:
     needs: check-for-comment
