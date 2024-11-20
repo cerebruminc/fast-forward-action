@@ -43,18 +43,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
 
-      - name: Check base ref, parse comments and check if fast-forward comment exists
-        run: |
-          if [ "$BASE_BRANCH" != "demo" ] && [ "$BASE_BRANCH" != "staging" ] && [ "$BASE_BRANCH" != "production" ]; then
-            exit 0
-          fi
-          cat <<"EOF" > comments.json
-          ${{ steps.get_pull_request_comments.outputs.data }}
-          EOF
-          COMMENT_EXISTS=$(jq -r '.[] | select(.body=="/fast-forward") | .body' < comments.json)
-          echo $COMMENT_EXISTS | grep -q "/fast-forward" 2> /dev/null
-          exit $?
-
       - uses: octokit/request-action@v2.x
         id: get_maintainers_and_admins
         with:
@@ -68,7 +56,19 @@ jobs:
         id: maintainers_and_admins_list
         run: |
           echo "${{ steps.get_list_of_maintainers_and_admins.outputs.data }}" | jq '[.[] | select(.permissions.maintain == true or .permissions.admin == true or .permissions.push == true) | .login]' > filtered_logins.json
-          echo "MAINTAINERS_AND_ADMINS=$(cat filtered_logins.json)" >> $GITHUB_ENV
+          echo "MAINTAINERS_AND_ADMINS=$(cat filtered_logins.json)" >> $GITHUB_OUTPUT
+
+      - name: Check base ref, parse comments and check if fast-forward comment exists
+        run: |
+          if [ "$BASE_BRANCH" != "demo" ] && [ "$BASE_BRANCH" != "staging" ] && [ "$BASE_BRANCH" != "production" ]; then
+            exit 0
+          fi
+          cat <<"EOF" > comments.json
+          ${{ steps.get_pull_request_comments.outputs.data }}
+          EOF
+          COMMENT_EXISTS=$(jq -r '.[] | select(.body=="/fast-forward") | .body' < comments.json)
+          echo $COMMENT_EXISTS | grep -q "/fast-forward" 2> /dev/null
+          exit $?
 
       - name: Debug
         run: |
