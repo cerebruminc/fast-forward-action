@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.1](https://github.com/cerebruminc/fast-forward-action/compare/v2.2.0...v2.2.1) (2024-11-20)
+
+
+### Bug Fixes
+
+* set new permission on fast-forward action ([d7b7775](https://github.com/cerebruminc/fast-forward-action/commit/d7b777525027d16552ec02e4da3465f2c7a7917e))
+* Use maintainers and admins permissions on each repo to determinate the right personal to merge the fast-forward-action ([321b8a5](https://github.com/cerebruminc/fast-forward-action/commit/321b8a5531bb42b435362d79167db2cc56ca6081))
+
 ## [2.2.0](https://github.com/cerebruminc/fast-forward-action/compare/v2.1.0...v2.2.0) (2024-11-13)
 
 
