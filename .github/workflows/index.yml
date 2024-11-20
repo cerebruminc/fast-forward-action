@@ -10,6 +10,8 @@ on:
 jobs:
   check-for-comment:
     runs-on: ubuntu-20.04
+    outputs:
+      MAINTAINERS_AND_ADMINS: ${{ steps.maintainers_and_admins_list.outputs.MAINTAINERS_AND_ADMINS }}
     env:
       PR: ${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.event.issue.number }}
     steps:
@@ -41,6 +43,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
 
+      - uses: octokit/request-action@v2.x
+        id: get_maintainers_and_admins
+        with:
+          route: GET /repos/{owner}/{repo}/collaborators
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.repository }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
+
+      - name: Parse maintainers and admins
+        id: maintainers_and_admins_list
+        run: |
+          echo "${{ steps.get_list_of_maintainers_and_admins.outputs.data }}" | jq '[.[] | select(.permissions.maintain == true or .permissions.admin == true or .permissions.push == true) | .login]' > filtered_logins.json
+          echo "MAINTAINERS_AND_ADMINS=$(cat filtered_logins.json)" >> $GITHUB_OUTPUT
+
       - name: Check base ref, parse comments and check if fast-forward comment exists
         run: |
           if [ "$BASE_BRANCH" != "demo" ] && [ "$BASE_BRANCH" != "staging" ] && [ "$BASE_BRANCH" != "production" ]; then
@@ -52,6 +69,7 @@ jobs:
           COMMENT_EXISTS=$(jq -r '.[] | select(.body=="/fast-forward") | .body' < comments.json)
           echo $COMMENT_EXISTS | grep -q "/fast-forward" 2> /dev/null
           exit $?
+
       - name: Debug
         run: |
           echo github.event_name: ${{ github.event_name }}
@@ -61,7 +79,7 @@ jobs:
 
   main:
     needs: check-for-comment
-    if: github.event_name == 'issue_comment' && github.event.issue.pull_request && github.event.comment.body == '/fast-forward' && (github.event.comment.author_association == 'CONTRIBUTOR' || github.event.comment.author_association == 'MAINTAINER' || github.event.comment.author_association == 'COLLABORATOR' || github.event.comment.author_association == 'MEMBER')
+    if: github.event_name == 'issue_comment' && github.event.issue.pull_request && github.event.comment.body == '/fast-forward' && contains( ${{ needs.check-for-comment.outputs.MAINTAINERS_AND_ADMINS }}, ${{ github.event.comment.user.login}} )
     runs-on: ubuntu-20.04
     steps:
       - uses: octokit/request-action@v2.x
