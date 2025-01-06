@@ -48,7 +48,7 @@ jobs:
         with:
           route: GET /repos/{owner}/{repo}/collaborators
           owner: ${{ github.repository_owner }}
-          repo: ${{ github.repository }}
+          repo: ${{ github.event.repository.name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_AUTH_TOKEN }}
 
