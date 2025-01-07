@@ -97,9 +97,9 @@ jobs:
           cat <<EOF > pr.js
           ${{ steps.get_pull_request_info.outputs.data }}
           EOF
-          export IS_MERGEABLE_PR=$(jq -r '.mergeable' pr.js)
-          export BASE_BRANCH=$(jq -r '.base.ref' pr.js)
-          export COMPARE_BRANCH=$(jq -r '.head.ref' pr.js)
+          export IS_MERGEABLE_PR=$(jq -r '.[0].mergeable' pr.js)
+          export BASE_BRANCH=$(jq -r '.[0].base.ref' pr.js)
+          export COMPARE_BRANCH=$(jq -r '.[0].head.ref' pr.js)
           echo "mergeable=$IS_MERGEABLE_PR" >> $GITHUB_OUTPUT
           echo "baseBranch=$BASE_BRANCH" >> $GITHUB_OUTPUT
           echo "BASE_BRANCH=$BASE_BRANCH" >> $GITHUB_ENV
