@@ -9,7 +9,7 @@ on:
 
 jobs:
   check-for-comment:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     outputs:
       MAINTAINERS_AND_ADMINS: ${{ steps.maintainers_and_admins_list.outputs.MAINTAINERS_AND_ADMINS }}
     env:
