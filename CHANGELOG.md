@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.3](https://github.com/cerebruminc/fast-forward-action/compare/v2.2.2...v2.2.3) (2025-02-13)
+
+
+### Bug Fixes
+
+* **ci:** update to use ubuntu-latest as runs-on ([5444702](https://github.com/cerebruminc/fast-forward-action/commit/5444702151b4d1e96a2740e49a8709b15108ed03))
+* clean up github's mess on the GET pull request endpoint ([#46](https://github.com/cerebruminc/fast-forward-action/issues/46)) ([1a8d0cf](https://github.com/cerebruminc/fast-forward-action/commit/1a8d0cff0890f8b870611aa6c209f8fd6056dcc5))
+
 ## [2.2.2](https://github.com/cerebruminc/fast-forward-action/compare/v2.2.1...v2.2.2) (2025-01-06)
 
 
