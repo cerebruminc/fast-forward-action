@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.4](https://github.com/cerebruminc/fast-forward-action/compare/v2.2.3...v2.2.4) (2025-02-26)
+
+
+### Bug Fixes
+
+* revert changes made on PR[#46](https://github.com/cerebruminc/fast-forward-action/issues/46) ([d3d1c93](https://github.com/cerebruminc/fast-forward-action/commit/d3d1c9327f6565627bd3d05b2176dcd4cf0171e2))
+
 ## [2.2.3](https://github.com/cerebruminc/fast-forward-action/compare/v2.2.2...v2.2.3) (2025-02-13)
 
 
