@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.5](https://github.com/cerebruminc/fast-forward-action/compare/v2.2.4...v2.2.5) (2025-03-04)
+
+
+### Bug Fixes
+
+* upgrade to ubuntu-latest ([#51](https://github.com/cerebruminc/fast-forward-action/issues/51)) ([be5cd6a](https://github.com/cerebruminc/fast-forward-action/commit/be5cd6adb976fb2a5186f67e0f79452797d7985a))
+
 ## [2.2.4](https://github.com/cerebruminc/fast-forward-action/compare/v2.2.3...v2.2.4) (2025-02-26)
 
 
