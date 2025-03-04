@@ -80,7 +80,7 @@ jobs:
   main:
     needs: check-for-comment
     if: github.event_name == 'issue_comment' && github.event.issue.pull_request && github.event.comment.body == '/fast-forward' && contains( ${{ needs.check-for-comment.outputs.MAINTAINERS_AND_ADMINS }}, ${{ github.event.comment.user.login}} )
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - uses: octokit/request-action@v2.x
         id: get_pull_request_info
