@@ -81,6 +81,11 @@ jobs:
     needs: check-for-comment
     if: github.event_name == 'issue_comment' && github.event.issue.pull_request && github.event.comment.body == '/fast-forward' && contains( ${{ needs.check-for-comment.outputs.MAINTAINERS_AND_ADMINS }}, ${{ github.event.comment.user.login}} )
     runs-on: ubuntu-latest
+    outputs:
+      mergeable: ${{ steps.mergeable_pr.outputs.mergeable }}
+      baseBranch: ${{ steps.mergeable_pr.outputs.baseBranch }}
+      compareBranch: ${{ steps.mergeable_pr.outputs.compareBranch }}
+      isProtectedBranch: ${{ steps.check_protected_branch.outputs.isProtectedBranch }}
     steps:
       - uses: octokit/request-action@v2.x
         id: get_pull_request_info
@@ -106,30 +111,37 @@ jobs:
           echo "compareBranch=$COMPARE_BRANCH" >> $GITHUB_OUTPUT
 
       - name: Check if the base ref is demo, staging or production
+        id: check_protected_branch
         run: |
           if [ "${BASE_BRANCH}" != "demo" ] && [ "${BASE_BRANCH}" != "staging" ] && [ "${BASE_BRANCH}" != "production" ]; then
-            exit 1
+            echo "isProtectedBranch=false" >> $GITHUB_OUTPUT
+          else
+            echo "isProtectedBranch=true" >> $GITHUB_OUTPUT
           fi
-
+    
+  merge:
+    needs: main
+    if: needs.main.outputs.mergeable == 'true' && needs.main.outputs.isProtectedBranch == 'true'
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v3
-        if: steps.mergeable_pr.outputs.mergeable
         with:
           fetch-depth: 0
-          ref: ${{ steps.mergeable_pr.outputs.compareBranch }}
+          ref: ${{ needs.main.outputs.compareBranch }}
           token: ${{ secrets.GITHUB_AUTH_TOKEN }}
 
       - name: Get branch freeze status
         id: freezeStatus
         uses: fjogeleit/http-request-action@v1
         with:
-          url: "https://app.mergefreeze.com/api/branches/${{ github.repository }}/${{ env.BASE_BRANCH }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
+          url: "https://app.mergefreeze.com/api/branches/${{ github.repository }}/${{ needs.main.outputs.baseBranch }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
           method: "GET"
 
       - name: Unfreeze Branch
-        if: steps.mergeable_pr.outputs.mergeable && fromJson(steps.freezeStatus.outputs.response).frozen
+        if: fromJson(steps.freezeStatus.outputs.response).frozen
         uses: fjogeleit/http-request-action@v1
         with:
-          url: "https://app.mergefreeze.com/api/branches/${{ github.repository }}/${{ env.BASE_BRANCH }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
+          url: "https://app.mergefreeze.com/api/branches/${{ github.repository }}/${{ needs.main.outputs.baseBranch }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
           method: "POST"
           customHeaders: '{"Content-Type": "application/x-www-form-urlencoded"}'
           data: "frozen=false&user_name=Cerebrum MergeBot"
@@ -138,20 +150,18 @@ jobs:
         run: sleep 15
 
       - name: Merge the PR
-        if: steps.mergeable_pr.outputs.mergeable
         run: |
           git config --global user.email "smellen@cerebrum.com"
           git config --global user.name "cerebrumcom"
           # git remote set-url origin https://cerebrumcom:${{ secrets.GITHUB_AUTH_TOKEN }}@github.com/${{ github.repository }}.git
-          git checkout ${{ steps.mergeable_pr.outputs.baseBranch }}
-          git merge --ff-only ${{ steps.mergeable_pr.outputs.compareBranch }}
+          git checkout ${{ needs.main.outputs.baseBranch }}
+          git merge --ff-only ${{ needs.main.outputs.compareBranch }}
           git push origin
 
       - name: Freeze Branch
-        if: steps.mergeable_pr.outputs.mergeable
         uses: fjogeleit/http-request-action@v1
         with:
-          url: "https://app.mergefreeze.com/api/branches/${{ github.repository }}/${{ env.BASE_BRANCH }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
+          url: "https://app.mergefreeze.com/api/branches/${{ github.repository }}/${{ needs.main.outputs.baseBranch }}/?access_token=${{ secrets.MERGEFREEZE_TOKEN }}"
           method: "POST"
           customHeaders: '{"Content-Type": "application/x-www-form-urlencoded"}'
           data: "frozen=true&user_name=Cerebrum MergeBot"
