@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/cerebruminc/fast-forward-action/compare/v3.0.0...v3.1.0) (2025-10-14)
+
+
+### Features
+
+* enhance merge workflow with outputs and branch protection checks ([f6956f8](https://github.com/cerebruminc/fast-forward-action/commit/f6956f8243161424841e27861688c08b5bcb0d55))
+
 ## [3.0.0](https://github.com/cerebruminc/fast-forward-action/compare/v2.2.5...v3.0.0) (2025-03-04)
 
 
