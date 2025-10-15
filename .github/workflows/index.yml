@@ -55,7 +55,7 @@ jobs:
       - name: Parse maintainers and admins
         id: maintainers_and_admins_list
         run: |
-          echo "${{ steps.get_list_of_maintainers_and_admins.outputs.data }}" | jq '[.[] | select(.permissions.maintain == true or .permissions.admin == true or .permissions.push == true) | .login]' > filtered_logins.json
+          echo "${{ steps.get_maintainers_and_admins.outputs.data }}" | jq '[.[] | select(.permissions.maintain == true or .permissions.admin == true or .permissions.push == true) | .login]' > filtered_logins.json
           echo "MAINTAINERS_AND_ADMINS=$(cat filtered_logins.json)" >> $GITHUB_OUTPUT
 
       - name: Check base ref, parse comments and check if fast-forward comment exists
