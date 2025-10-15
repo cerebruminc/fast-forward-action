@@ -99,12 +99,12 @@ jobs:
       - name: Parse pull request using jq and checking mergeable state
         id: mergeable_pr
         run: |
-          cat <<"EOF" > pr.js
+          cat <<"EOF" > pr.json
           ${{ steps.get_pull_request_info.outputs.data }}
           EOF
-          export IS_MERGEABLE_PR=$(jq -r '.mergeable' pr.js)
-          export BASE_BRANCH=$(jq -r '.base.ref' pr.js)
-          export COMPARE_BRANCH=$(jq -r '.head.ref' pr.js)
+          export IS_MERGEABLE_PR=$(jq -r '.mergeable' pr.json)
+          export BASE_BRANCH=$(jq -r '.base.ref' pr.json)
+          export COMPARE_BRANCH=$(jq -r '.head.ref' pr.json)
           echo "mergeable=$IS_MERGEABLE_PR" >> $GITHUB_OUTPUT
           echo "baseBranch=$BASE_BRANCH" >> $GITHUB_OUTPUT
           echo "BASE_BRANCH=$BASE_BRANCH" >> $GITHUB_ENV
