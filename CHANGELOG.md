@@ -1,5 +1,14 @@
 # Changelog
 
+## [3.1.1](https://github.com/cerebruminc/fast-forward-action/compare/v3.1.0...v3.1.1) (2025-10-15)
+
+
+### Bug Fixes
+
+* change JSON data file extension from .js to .json ([7210384](https://github.com/cerebruminc/fast-forward-action/commit/72103840d268c8b3955ac5b03ee76b1566ccc663))
+* update permissions for release-please workflow in GitHub Actions ([8d18824](https://github.com/cerebruminc/fast-forward-action/commit/8d1882423a7437dbf2a58d84bacf2d59fd51d324))
+* **workflow:** prevent shell interpretation in JSON heredoc ([1572e47](https://github.com/cerebruminc/fast-forward-action/commit/1572e47a3633b8833e25163ca1544b59e52c1d34))
+
 ## [3.1.0](https://github.com/cerebruminc/fast-forward-action/compare/v3.0.0...v3.1.0) (2025-10-14)
 
 
