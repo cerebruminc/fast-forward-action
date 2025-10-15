@@ -99,7 +99,7 @@ jobs:
       - name: Parse pull request using jq and checking mergeable state
         id: mergeable_pr
         run: |
-          cat <<EOF > pr.js
+          cat <<"EOF" > pr.js
           ${{ steps.get_pull_request_info.outputs.data }}
           EOF
           export IS_MERGEABLE_PR=$(jq -r '.mergeable' pr.js)
