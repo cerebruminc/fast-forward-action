@@ -79,7 +79,11 @@ jobs:
 
   main:
     needs: check-for-comment
-    if: github.event_name == 'issue_comment' && github.event.issue.pull_request && github.event.comment.body == '/fast-forward' && contains( ${{ needs.check-for-comment.outputs.MAINTAINERS_AND_ADMINS }}, ${{ github.event.comment.user.login}} )
+    if: >
+      github.event_name == 'issue_comment' &&
+      github.event.issue.pull_request &&
+      github.event.comment.body == '/fast-forward' &&
+      contains(fromJson(needs.check-for-comment.outputs.MAINTAINERS_AND_ADMINS), github.event.comment.user.login)
     runs-on: ubuntu-latest
     outputs:
       mergeable: ${{ steps.mergeable_pr.outputs.mergeable }}
@@ -118,7 +122,7 @@ jobs:
           else
             echo "isProtectedBranch=true" >> $GITHUB_OUTPUT
           fi
-    
+
   merge:
     needs: main
     if: needs.main.outputs.mergeable == 'true' && needs.main.outputs.isProtectedBranch == 'true'
