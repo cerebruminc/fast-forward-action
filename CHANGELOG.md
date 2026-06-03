@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.2.0](https://github.com/cerebruminc/fast-forward-action/compare/v3.1.1...v3.2.0) (2026-06-03)
+
+
+### Features
+
+* **ci:** move our CIs to use DRY actions ([e28b156](https://github.com/cerebruminc/fast-forward-action/commit/e28b156ce4c705d49a40cd67865a358650944419))
+
+
+### Bug Fixes
+
+* **ci:** bump CIs to their latest version ([c8711a4](https://github.com/cerebruminc/fast-forward-action/commit/c8711a4b04ec146fe09da6369e2ec0b0709c7126))
+* contains syntax ([b4fe6a7](https://github.com/cerebruminc/fast-forward-action/commit/b4fe6a71b609200f1a5e291b4ecf983c4e91e281))
+* correct output step reference for maintainers and admins list parsing ([974f4e5](https://github.com/cerebruminc/fast-forward-action/commit/974f4e51bae613fe3ce38423325aa15429bec27f))
+
 ## [3.1.1](https://github.com/cerebruminc/fast-forward-action/compare/v3.1.0...v3.1.1) (2025-10-15)
 
 
