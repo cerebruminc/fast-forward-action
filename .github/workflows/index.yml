@@ -128,7 +128,7 @@ jobs:
     if: needs.main.outputs.mergeable == 'true' && needs.main.outputs.isProtectedBranch == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: cerebruminc/ci-actions/actions/checkout@v1
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
           ref: ${{ needs.main.outputs.compareBranch }}
