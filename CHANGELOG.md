@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.2.1](https://github.com/cerebruminc/fast-forward-action/compare/v3.2.0...v3.2.1) (2026-06-03)
+
+
+### Bug Fixes
+
+* **fast-forward-action:** fix issue while scaping caracters and remove demo environment reference ([35e2bdf](https://github.com/cerebruminc/fast-forward-action/commit/35e2bdf3e419600f553a2c5da4434d331c5ceeee))
+
 ## [3.2.0](https://github.com/cerebruminc/fast-forward-action/compare/v3.1.1...v3.2.0) (2026-06-03)
 
 
