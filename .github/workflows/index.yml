@@ -55,12 +55,14 @@ jobs:
       - name: Parse maintainers and admins
         id: maintainers_and_admins_list
         run: |
-          echo "${{ steps.get_maintainers_and_admins.outputs.data }}" | jq '[.[] | select(.permissions.maintain == true or .permissions.admin == true or .permissions.push == true) | .login]' > filtered_logins.json
+          echo "$JSON_DATA" | jq -c '[.[] | select(.permissions.maintain == true or .permissions.admin == true or .permissions.push == true) | .login]' > filtered_logins.json
           echo "MAINTAINERS_AND_ADMINS=$(cat filtered_logins.json)" >> $GITHUB_OUTPUT
+        env:
+          JSON_DATA: ${{ steps.get_maintainers_and_admins.outputs.data }}
 
       - name: Check base ref, parse comments and check if fast-forward comment exists
         run: |
-          if [ "$BASE_BRANCH" != "demo" ] && [ "$BASE_BRANCH" != "staging" ] && [ "$BASE_BRANCH" != "production" ]; then
+          if [ "$BASE_BRANCH" != "staging" ] && [ "$BASE_BRANCH" != "production" ]; then
             exit 0
           fi
           cat <<"EOF" > comments.json
@@ -117,7 +119,7 @@ jobs:
       - name: Check if the base ref is demo, staging or production
         id: check_protected_branch
         run: |
-          if [ "${BASE_BRANCH}" != "demo" ] && [ "${BASE_BRANCH}" != "staging" ] && [ "${BASE_BRANCH}" != "production" ]; then
+          if [ "${BASE_BRANCH}" != "staging" ] && [ "${BASE_BRANCH}" != "production" ]; then
             echo "isProtectedBranch=false" >> $GITHUB_OUTPUT
           else
             echo "isProtectedBranch=true" >> $GITHUB_OUTPUT
